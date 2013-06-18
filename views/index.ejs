@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="javascripts/jquery.slides.js"></script>
+
+		<script>
+			function loadInstagramImages(callback) {
+				$.ajax({
+					url: '/instagram/search',
+					data: 'aviary',
+					dataType: 'json',
+					success: function(data) {
+						images = $.map(data, function(image, i) {
+							//console.log(image);
+							return image.images.standard_resolution.url;
+						});
+						callback();
+					}
+				});
+			}
+
+			var images = [
+				'http://distilleryimage9.s3.amazonaws.com/f7ee022ad76811e2979222000a1f9bc6_7.jpg',
+				'http://distilleryimage5.s3.amazonaws.com/3b6e8a4ed74e11e299ae22000a1f9c95_7.jpg'
+			];
+
+			$(function() {
+				loadInstagramImages(function() {
+					$.each(images, function(i, img) {
+						console.log(img);
+						$('#slides').append('<img src="' + img + '" />');
+					});
+				
+					$('#slides').slidesjs({
+						width: 800,
+						height: 800,
+						 play: {
+				          active: true,
+				          auto: true,
+				          interval: 4000,
+				          swap: true
+				        }
+					});
+				});
+			});
+		</script>
+	
+		<style>
+			body {
+				background: #333;
+			}
+			#slides {
+				display: none;
+			}
+			.container {
+				width: 800px;
+				margin: 0 auto;
+			}
+
+		    body {
+		      padding-top:70px;
+		    }
+
+		    #slides {
+		      display: none
+		    }
+
+		    .slidesjs-navigation, .slidesjs-pagination {
+		    	display: none;
+		   
+		    }
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div id="slides"></div>
+		</div>
+	</body>
+</html>
